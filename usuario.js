@@ -20,6 +20,19 @@ email: {
      senha: Sequelize.STRING,
 
       
-})
+});
+
+async function createUsuario(nome,email, senha) {
+    try {
+        const novoUsuario = await Usuario.create({
+            nome: nome,
+            email: email,
+            senha: senha
+        });
+        console.log('Novo usuario criado:', novoUsuario.toJSON());
+    } catch (error) {
+        console.error('Erro ao criar usuario:', error);
+    }
+}
 
  module.exports = Usuario;

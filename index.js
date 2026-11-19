@@ -1,7 +1,27 @@
+const readline = require('readline/promises');
+const { stdin: input, stdout: output } = require ('process');
+const database = require('./db');
+const {
+    createProduto, 
+    consultarProdutos,
+    consultarCodProdutos,
+    atualizarProduto,
+    deletarProduto
+} = require('./produto');
+const usuario = require('./usuario')
+
+(async () => {
+    try {
+        await database 
+    }
+}
+)
+
 (async () => {
     const database = require('./db');
     const Usuario = require('./usuario');
     const Produto = require('./produto');
+    
 
     try {
         const resultado = await database.sync();
@@ -21,13 +41,13 @@
            });
 
          console.log(cadastrarUsuario.toJSON());
-
+/*
           const produtos = await Produto.findAll();
           console.log(produtos);
           
           const produto = await Produto.findByPk(1);
-          console.log(produto)
-
+          console.log(produto);
+*/
           const produto = await Produto.findByPk(1);
           //console.log(produto);
           produto.nome = "Tablet Top";
@@ -37,11 +57,7 @@
 
           //assim
            Produto.destroy({ where: { id: 1 }});
-
-          //ou assim
-          const produto = await Produto.findByPk(1);
-          produto.destroy();
-          
+       
     } catch (error) {
         console.log(error);
     }
