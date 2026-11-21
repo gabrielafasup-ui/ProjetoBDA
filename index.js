@@ -12,7 +12,31 @@ const usuario = require('./usuario')
 
 (async () => {
     try {
-        await database 
+        await database.sync();
+        console.log('Conexão com o banco de dados estabelecida com sucesso.');
+
+        //criando a interface do readline
+        const rl = readline.createInterface({ input, output });
+
+        let executando = true;
+        while (executando) {
+            const menu = '\nEscolha uma opção:\n' +
+                         '1. Criar Produto\n' +
+                         '2. Consultar Produtos\n' +
+                         '3. Consultar Produto por ID\n' +
+                         '4. Atualizar Produto\n' +
+                         '5. Deletar Produto\n' +
+                         '6. Sair\n' +
+                         'Opção: ';
+
+            //Usar o await para pausar e esperar o usuário digitar algo no terminal
+            const opcao = await rl.question(menu);
+
+            switch (opcao.trim()) {}        }
+                case '1': {
+                    const nome = await rl.question('Digite o nome do produto: ');
+                    
+                }
     }
 }
 )
@@ -56,7 +80,7 @@ const usuario = require('./usuario')
           console.log(resultadoSave);
 
           //assim
-           Produto.destroy({ where: { id: 1 }});
+           Produto.destroy({ where: { id: 1 }})
        
     } catch (error) {
         console.log(error);
