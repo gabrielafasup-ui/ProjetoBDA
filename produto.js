@@ -15,7 +15,8 @@ const Produto = database.define('produto', {
     preco: {
     type: Sequelize.DOUBLE,
 },
-    descricao: Sequelize.STRING,
+    descricao: Sequelize.TEXT,
+    allowNull: false
 });
 
 async function createProduto(nome,preco, descricao) {
@@ -40,7 +41,7 @@ async function consultarProdutos() {
     }
 }
 
-async function consultarCodProduto(id) {
+async function consultarCodProdutos(id) {
     try {
         const produtos = await Produto.findByPk(id);
         console.log('Produtos encontrados:', produtos.toJSON());
@@ -85,7 +86,7 @@ module.exports = {
     Produto,
     createProduto,
     consultarProdutos,
-    consultarCodProduto, 
+    consultarCodProdutos, 
     atualizarProduto,
     deletarProduto
 };

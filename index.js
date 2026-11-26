@@ -8,7 +8,7 @@ const {
     atualizarProduto,
     deletarProduto
 } = require('./produto');
-const usuario = require('./usuario')
+const usuario = require('./usuario');
 
 (async () => {
     try {
@@ -17,7 +17,7 @@ const usuario = require('./usuario')
 
         //criando a interface do readline
         const rl = readline.createInterface({ input, output });
-
+    
         let executando = true;
         while (executando) {
             const menu = '\nEscolha uma opção:\n' +
@@ -28,62 +28,51 @@ const usuario = require('./usuario')
                          '5. Deletar Produto\n' +
                          '6. Sair\n' +
                          'Opção: ';
-
+        
             //Usar o await para pausar e esperar o usuário digitar algo no terminal
             const opcao = await rl.question(menu);
-
-            switch (opcao.trim()) {}        }
+                 
+            switch (opcao.trim()) {       
                 case '1': {
                     const nome = await rl.question('Digite o nome do produto: ');
-                    
+                    const preco = parseFloat(await rl.question('Digite o preco do produto: '));
+                    const descricao = await rl.question('Digite a descrição: ');
+                    await createProduto('nome, preco, descricao');
+                    break;         
                 }
+                case '2':
+                    await consultarProdutos();
+                    break;
+                case '3': {
+                    const idConsultar = await rl.question('Digite o ID do produto: ');
+                    await consultarCodProdutos(idConsultar);
+                    break;
+                }
+                case '4': {
+                    const idAtualizar = await rl.question('Digite o ID do produto a atualizar: ');
+                    const novoNome = await rl.question('Novo nome: ');
+                    const novoPreco = parseFloat(await rl.question('Novo preço: '));
+                    const novaDescricao = await rl.question('Nova descrição: ');
+                    await atualizarProduto(idAtualizar, novoNome, novoPreco, novaDescricao);
+                    break;
+                }
+                case '5': {
+                    const idDeletar = await rl.question('Digite o ID do produto que deseja deletar: ');
+                    await deletarProduto(idDeletar);
+                    break;
+                }
+                case '6':
+                    console.log('Saindo do programa...');
+                    executando = false;
+                    break;
+            default:
+                console.log('Opção inválida. Por favor, escolha uma opção válida. ');
     }
 }
-)
+    rl.close(); // Fecha a interface do terminal ao sair 
+    process.exit(0);
 
-(async () => {
-    const database = require('./db');
-    const Usuario = require('./usuario');
-    const Produto = require('./produto');
-    
-
-    try {
-        const resultado = await database.sync();
-        console.log(resultado);
-
-        const resultadoCreateProduto = await Produto.create ({
-            nome: 'tablet',
-            preco: 0,
-            descricao: 'Um tablet bonito'
-        });
-           console.log(resultadoCreateProduto.toJSON());
-    
-           const cadastrarUsuario = await Usuario.create ({
-            nome: 'Gabriela',
-            email: 'gaga@gmail.com',
-            senha: '123456'
-           });
-
-         console.log(cadastrarUsuario.toJSON());
-/*
-          const produtos = await Produto.findAll();
-          console.log(produtos);
-          
-          const produto = await Produto.findByPk(1);
-          console.log(produto);
-*/
-          const produto = await Produto.findByPk(1);
-          //console.log(produto);
-          produto.nome = "Tablet Top";
-
-          const resultadoSave = await produto.save();
-          console.log(resultadoSave);
-
-          //assim
-           Produto.destroy({ where: { id: 1 }})
-       
-    } catch (error) {
-        console.log(error);
-    }
-
+} catch (error) {
+    console.error('Erro ao conectar ao banco de dados ou executar o menu: ', error);
+}
 })();
